@@ -187,6 +187,7 @@ where both are strings.  NEW-FILE-NAME is relative to
   :type '(repeat (string :tag "Jira state name:")))
 
 (defcustom org-jira-users
+  ;; TODO: Remove usage of accountID
   '(("Full Name" . "account-id"))
   "A list of displayName and key pairs."
   :group 'org-jira
@@ -631,6 +632,7 @@ it isn't already on."
    org-jira-users
    (mapcar (lambda (user)
              (cons (org-jira-decode (cdr (assoc 'displayName user)))
+                   ;; TODO: Remove usage of accountID
                    (org-jira-decode (cdr (assoc 'accountId user)))))
            (jiralib-get-users project-key))))
 
@@ -640,6 +642,7 @@ it isn't already on."
    org-jira-users
    (mapcar (lambda (user)
              (cons (org-jira-decode (cdr (assoc 'displayName user)))
+                   ;; TODO: Remove usage of accountID
                    (org-jira-decode (cdr (assoc 'accountId user)))))
            (jiralib-get-users project-key))))
 
@@ -1812,6 +1815,7 @@ that should be bound to an issue."
              (description . ,description)
              (priority (id . ,priority))
              ;; accountId should be nil if Unassigned, not the key slot.
+             ;; TODO: Remove usage of accountID
              (assignee (accountId . ,(or (cdr (assoc user jira-users)) nil)))))))
     ticket-struct))
 

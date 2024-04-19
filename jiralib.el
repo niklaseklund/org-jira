@@ -361,7 +361,7 @@ request.el, so if at all possible, it should be avoided."
       ('getIssueTypesByProject
        (let ((response (jiralib--rest-call-it (format "/rest/api/2/project/%s" (first params)))))
          (cl-coerce (cdr (assoc 'issueTypes response)) 'list)))
-      ('getUser (jiralib--rest-call-it "/rest/api/2/user" :params `((accountId . ,(first params)))))
+      ('getUser (jiralib--rest-call-it "/rest/api/2/user" :params `((username . ,(first params)))))
       ('getVersions (jiralib--rest-call-it (format "/rest/api/2/project/%s/versions" (first params))))
 
       ;; Worklog calls
@@ -937,12 +937,14 @@ Return nil if the field is not found"
 
 (defun jiralib-get-user-fullname (account-id)
   "Return the full name (displayName) of the user with ACCOUNT-ID."
+  ;; TODO: Remove usage of account-id it should be using username instead
   (cl-loop for user in (jiralib-get-users nil)
         when (rassoc account-id user)
         return (cdr (assoc 'displayName user))))
 
 (defun jiralib-get-user-account-id (project full-name)
   "Return the name of the user with FULL-NAME (displayName) in PROJECT."
+  ;; TODO: Should be renamed to get-user-name
   (cl-loop for user in (jiralib-get-users project)
         when (rassoc full-name user)
         return (cdr (assoc 'name user))))
@@ -1100,6 +1102,7 @@ Return no more than MAX-NUM-RESULTS."
 (defun jiralib-get-user (account-id)
   "Return a user's information given their full name."
   (cond ((eq 0 (length account-id)) nil) ;; Unassigned
+        ;; TODO: Remove usage of accountID, it should be username instead
         (t (jiralib-call "getUser" nil account-id))))
 
 (defvar jiralib-users-cache nil "Cached list of users.")
