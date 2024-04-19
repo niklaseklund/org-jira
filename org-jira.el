@@ -2212,8 +2212,8 @@ otherwise it should return:
                    (cons 'priority (org-jira-get-id-name-alist org-issue-priority
                                                        (jiralib-get-priorities)))
                    (cons 'description org-issue-description)
-                   (cons 'assignee (list (cons 'id (jiralib-get-user-account-id project org-issue-assignee))))
-                   (cons 'reporter (list (cons 'id (jiralib-get-user-account-id project org-issue-reporter))))
+                   (cons 'assignee (list (cons 'name (jiralib-get-user-account-id project org-issue-assignee))))
+                   (cons 'reporter (list (cons 'name (jiralib-get-user-account-id project org-issue-reporter))))
                    (cons 'summary (org-jira-strip-priority-tags (org-jira-get-issue-val-from-org 'summary)))
                    (cons 'issuetype `((id . ,org-issue-type-id)
       (name . ,org-issue-type))))))
@@ -2238,11 +2238,7 @@ otherwise it should return:
             issue-id
             (org-jira-with-callback
               (org-jira-log "Update get issue for refresh callback hit.")
-              (-> cb-data list org-jira-get-issues))))
-         ))
-      )))
-
-
+              (-> cb-data list org-jira-get-issues)))))))))
 
 (defun org-jira-parse-issue-id ()
   "Get issue id from org text."
